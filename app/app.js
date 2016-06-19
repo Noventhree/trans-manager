@@ -4,7 +4,6 @@
 angular.module('myApp', [
   'ngRoute',
   'myApp.view1',
-  'myApp.view2',
   'ngAnimate',
   'myApp.version'
 ]).
@@ -31,9 +30,9 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
     toggleBindItem: function(item) {
       if (this.items.indexOf(item.id) < 0){
         this.items.push(item.id)
-        console.log('item bind to user');
+        // console.log('item bind to user');
       }else{
-        console.log('item unbind to user');
+        // console.log('item unbind to user');
         var index = this.items.indexOf(item.id);
         this.items.splice(index, 1);
       }
@@ -41,11 +40,11 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
     removeBindItem: function(item){
       if (this.items.indexOf(item.id) < 0){
       }else{
-        console.log('before ' + this.items);
-        console.log('item unbind to user');
+        // console.log('before ' + this.items);
+        // console.log('item unbind to user');
         var index = this.items.indexOf(item.id);
         this.items.splice(index, 1);
-        console.log('after ' + this.items);
+        // console.log('after ' + this.items);
       }
     },
     clearHistory: function(){
@@ -68,15 +67,6 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
   };
   Item.prototype = {
     constructor: Item,
-    // updateOwners: function(users){
-    //   var i;
-    //   for (i=0; i<users.length; i++) {
-    //     var user = users[i];
-    //     if (user.items.indexOf(this.id) > -1)  {
-    //       this.owners.push(user.id)
-    //     };
-    //   };
-    // },
     toggleBindOwner: function(user){
       if (this.owners.indexOf(user.id) < 0){
         this.owners.push(user.id)
@@ -95,11 +85,6 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
         console.log('user unbind to item');
       }
     },
-    // clearBindings: function(arr){
-    //   var index = arr.indexOf(this.id);
-    //   arr.splice(index, 1);
-    //   return this
-    // },
   };
   return Item
 })
@@ -118,9 +103,6 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
     angular.forEach(this.items,function(item){
       that.totalPrice += item.price;
     });
-    // angular.forEach(this.items, function(item) {
-    //   item.updateOwners(that.users);
-    // });
   };
   Transaction.prototype = {
     constructor: Transaction,
@@ -145,11 +127,11 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
                 moneySpent: moneySpent,
                 name: item.name
               });
-              console.log('user: ' + user.id + ' spent ' + moneySpent);
-              if (user.cash >= 0){
-                // var index = this.items.indexOf(item);
-                // this.items.splice(index, 1);
-              };
+              // console.log('user: ' + user.id + ' spent ' + moneySpent);
+              // if (user.cash >= 0){
+              //   var index = this.items.indexOf(item);
+              //   this.items.splice(index, 1);
+              // };
 
             };
           });
@@ -181,7 +163,6 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
     },
     removeItem: function(item){
       //remove item obj and all its bindings in user obj
-      // this.items.pop(obj);
       angular.forEach(this.users, function(user){
         // console.log("user #" + user.id + "has removed its binding form item #" + item.id);
         user.removeBindItem(item);

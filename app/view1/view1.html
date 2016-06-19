@@ -1,0 +1,92 @@
+<!-- <p>This is the partial for view 1.</p> -->
+
+<section class="user-list jumbotron">>
+  <div class="flex-container">
+
+  <form class="new-user">
+    <div class="form-group">
+      <label class="">Name</label>
+      <input class="form-control" type="text" ng-model='newUser.name'>
+    </div>
+    <div class="form-group">
+      <label for="">Cash</label>
+      <input class="form-control" type="number" ng-model='newUser.cash'>
+    </div>
+
+    <input class="btn btn-default btn-block" type="button" name="name" value="New user" ng-click="transaction.addUser(newUser); transaction.updateState()">
+
+  </form>
+  <form class="new-item" id="popup">
+    <div class="form-group">
+      <label for="">Name</label>
+      <input class="form-control" type="text" ng-model='newItem.name'>
+
+    </div>
+    <div class="form-group">
+      <label for="">Price</label>
+      <input class="form-control" type="number" ng-model='newItem.price'>
+    </div>
+
+    <input class="btn btn-default btn-block" type="button" name="name" value="New item" ng-click="transaction.addItem(newItem); transaction.updateState()">
+
+  </form>
+</div>
+    <ul class="user-container flex-container">
+
+        <li class="user flex-item" ng-repeat="user in transaction.users">
+
+            <h3 class="user-name">{{user.name}}</h3>
+            <h4 class="user-cash">{{user.cash | number : 2}}$</h4>
+
+            <!-- <div class="form-group">
+              <input class="form-control" type="text" ng-model='user.cash' ng-change='user.resetCash()'>
+            </div> -->
+            <ul class="list-unstyled">
+              <li ng-repeat="history in user.history" class="history-li">
+                {{history.moneySpent | number : 2}}$
+                {{history.name}}
+
+              </li>
+            </ul>
+            <hr>
+            <h4 class="user-cash">{{user.cashLeft | number : 2}}$</h4>
+
+            <br>
+            <div class="glyphicon glyphicon-remove-circle btn-remove" ng-click="transaction.removeUser(user); transaction.updateState(); transaction.run()"></div>
+            <ul class="items-bind flex-container" >
+              <li class="item-bind flex-item" ng-repeat="item in transaction.items" ng-class="{'is-active' : toggleItem}">
+                <div class="btn btn-default btn-xs" ng-click="user.toggleBindItem(item); item.toggleBindOwner(user); transaction.updateState(); toggleItem = !toggleItem; transaction.run()" >
+                  {{item.name}}
+                  <span>{{item.price}}$</span>
+                </div>
+                <div class="btn-remove glyphicon glyphicon-remove-circle" ng-click="transaction.removeItem(item); transaction.updateState(); transaction.run()"></div>
+
+              </li>
+
+            </ul>
+        </li>
+
+    </ul>
+</section>
+<!-- <section class="transaction-info jumbotron">
+  <div class="row">
+    <div class="col-xs-6 text-center">
+      totalCash: {{transaction.totalCash}}
+
+    </div>
+    <div class="col-md-6 text-center">
+
+      totalPrice: {{transaction.totalPrice}}<br>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-xs-12 text-center">
+      saldo: {{transaction.saldo}}<br>
+    </div>
+  </div>
+
+  <div class="btn btn-primary btn-lg btn-block" ng-click="transaction.run()">
+    RUN
+</div>
+</section> -->

@@ -47,6 +47,17 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
         // console.log('after ' + this.items);
       }
     },
+    hasItem: function (id){
+      if (id){
+        for (var i = 0; i < this.items.length; i++) {
+          if (this.items[i] === id) {
+            return true
+          };
+        };
+        return false
+      };
+      return this.history === [] ? false : true
+    },
     clearHistory: function(){
       this.history = [];
       return this
@@ -54,7 +65,54 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
     resetCash: function(){
       this.cashLeft = this.cash;
       return this
-    }
+    },
+    addHistory: function(item, moneySpent){
+      this.history.push({
+        id: item.id,
+        moneySpent: moneySpent,
+        name: item.name
+      });
+      // console.log('history of id:' + item.id + ' added');
+      return this
+    },
+    hasHistory: function(id) {
+      if (id){
+        for (var i = 0; i < this.history.length; i++) {
+          if (this.history[i].id === id) {
+            return true
+          };
+        };
+        return false
+      };
+      return this.history === [] ? false : true
+    },
+    removeHistory: function(id){
+      // console.log('remove ran for id: ' + id)
+      for (var i = 0; i < this.history.length; i++) {
+        if (this.history[i].id === id) {
+          this.history.splice(i, 1)
+          // console.log('history of id:' + id + ' removed');
+          break
+        };
+      };
+      return this
+    },
+    changeHistory: function(id, nMoneySpent){
+      for (var i = 0; i < this.history.length; i++) {
+        if (this.history[i].id === id) {
+          this.history[i].moneySpent = nMoneySpent
+          break
+        }
+      }
+      return this
+    },
+    getHistory: function (id) {
+      for (var i = 0; i < this.history.length; i++) {
+        if (this.history[i].id === id) {
+          return this.history[i]
+        };
+      };
+    },
   };
   return User
 })
@@ -70,11 +128,11 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
     toggleBindOwner: function(user){
       if (this.owners.indexOf(user.id) < 0){
         this.owners.push(user.id)
-        console.log('user bind to item');
+        // console.log('user bind to item');
       }else {
         var index = this.owners.indexOf(user.id);
         this.owners.splice(index, 1);
-        console.log('user unbind to item');
+        // console.log('user unbind to item');
       }
     },
     removeBindOwner: function(user){
@@ -82,8 +140,16 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
       }else {
         var index = this.owners.indexOf(user.id);
         this.owners.splice(index, 1);
-        console.log('user unbind to item');
+        // console.log('user unbind to item');
       }
+    },
+      hasOwner: function(id) {
+        for (var i = 0; i < this.owners.length; i++) {
+          if (this.owners[i] === id) {
+            return true
+          };
+          return false
+        }
     },
   };
   return Item
@@ -112,41 +178,87 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
       console.log('transaction runned');
 
       angular.forEach(that.users, function(user){
-        user.clearHistory();
+        // user.clearHistory();
         user.resetCash();
       });
       angular.forEach(this.items, function(item){
-        angular.forEach(item.owners, function(owner){
-          angular.forEach(that.users, function(user){
+
+        angular.forEach(that.users, function(user){
+          // if (user.hasHistory(item.id) && !item.hasOwner(user.id) || !user.hasHistory(item.id) && item.hasOwner(user.id)) {
+          //   user.removeHistory(item.id)
+          // };
+          // console.log(item.owners);
+          // console.log(item.owners.length === 0);
+          // if (!item.hasOwner(user.id)) {
+          //   user.removeHistory(item.id);
+          //   console.log('user ' + user.id +'removed history with item: ' + item.id);
+          //
+          // };
+          // console.log(user.history);
+          angular.forEach(item.owners, function(owner){
+
+            moneySpent = Math.round(-item.price/item.owners.length* 100) / 100;
+            // console.log(moneySpent);
+            console.log(moneySpent);
             if (owner === user.id){
-              // user.cashLeft = user.cash;
-              moneySpent = -item.price/item.owners.length;
+
+
+
+
               user.dCash(moneySpent);
-              user.history.push({
-                id: item.id,
-                moneySpent: moneySpent,
-                name: item.name
-              });
-              // console.log('user: ' + user.id + ' spent ' + moneySpent);
-              // if (user.cash >= 0){
-              //   var index = this.items.indexOf(item);
-              //   this.items.splice(index, 1);
-              // };
+              if (user.hasHistory(item.id)) {
+                // console.log('item: '+ item.id +' hasHistory ' + 'with user ' + user.id);
+                if (user.getHistory(item.id).moneySpent === moneySpent) {
+                  // console.log('user ' + user.id +'did NOT change history with item: ' + item.id);
+                }else if (user.getHistory(item.id).moneySpent === 0) {
+                  console.log(moneySpent);
+                  // console.log('user ' + user.id +'removed history with item: ' + item.id);
+                  user.removeHistory(item.id)
+
+                }else {
+                  // console.log('user ' + user.id +'changed history with item: ' + item.id + ' from ' + user.getHistory(item.id).moneySpent + ' to ' + moneySpent);
+                  user.changeHistory(item.id, moneySpent)
+                }
+
+              } else if (!user.hasHistory(item.id)) {
+                // console.log('item: '+ item.id +' hasNotHistory ' + 'with user ' + user.id + ' new history added')
+                // console.log(item.owners);
+                // console.log(user.items);
+                // console.log(user.getHistory(item.id));
+                user.addHistory(item, moneySpent)
+                // console.log(item.owners);
+                // console.log(user.items);
+                // console.log(user.getHistory(item.id));
+              }
+
+
+
+
 
             };
+
+
           });
+          // if (!item.hasOwner(user.id)) {
+          //   user.removeHistory(item.id);
+          // }
+          if (item.owners.length === 0 || (!item.hasOwner(user.id) && !user.hasItem(item.id))) {
+            user.removeHistory(item.id);
+            // console.log('user ' + user.id +'removed history with item: ' + item.id);
+
+          };
 
         });
       });
       return this
     },
-    addUser: function(obj){
-      var newUser = new User(obj.name, obj.cash);
+    addUser: function(user){
+      var newUser = new User(user.name, user.cash);
       this.users.push(newUser);
       return this
     },
-    addItem: function(obj){
-      var newItem = new Item(obj.name, obj.price);
+    addItem: function(item){
+      var newItem = new Item(item.name, item.price);
       this.items.push(newItem);
       return this
     },

@@ -37,6 +37,7 @@
 
             <h3 class="user-name">{{user.name}}</h3>
             <h4 class="user-cash">{{user.cash | number : 2}}$</h4>
+            <!-- <span>id: {{user.id}}</span> -->
 
             <!-- <div class="form-group">
               <input class="form-control" type="text" ng-model='user.cash' ng-change='user.resetCash()'>
@@ -58,6 +59,8 @@
                 <div class="btn btn-default btn-xs" ng-click="user.toggleBindItem(item); item.toggleBindOwner(user); transaction.updateState(); toggleItem = !toggleItem; transaction.run()" >
                   {{item.name}}
                   <span>{{item.price}}$</span>
+                  <!-- <span>{{item.owners}}</span> -->
+                  <!-- <span>{{item.id}}</span> -->
                 </div>
                 <div class="btn-remove glyphicon glyphicon-remove-circle" ng-click="transaction.removeItem(item); transaction.updateState(); transaction.run()"></div>
 

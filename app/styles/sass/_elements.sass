@@ -23,6 +23,31 @@
   &:hover
     box-shadow: 3px 3px 15px #000
 
+.history-li
+  box-sizing: border-box
+  line-height: 25px
+  &.ng-enter
+    transition: 0.3s ease-out all
+    opacity: 0
+    max-height: 0
+    &.ng-enter-active
+      opacity: 1
+      max-height: 25px
+  &.ng-leave
+    transition: 0.3s ease-out all
+    opacity: 1
+    max-height: 25px
+    &.ng-leave-active
+      opacity: 0
+      max-height: 0
+  &.ng-move
+    transition: 0.3s ease-out all
+    opacity: 0
+    max-height: 0
+
+    &.ng-move-active
+    opacity: 1
+    max-height: 25px
 
 .new-user
   @extend .card
@@ -32,28 +57,62 @@
   @extend .card
   background-color: #d39090
 
+// .user
+//   &.ng-enter
+//     transition: 0.3s ease-out all
+//     opacity: 0
+//     &.ng-enter-active
+//       opacity: 1
+//   &.ng-leave
+//     transition: 0.3s ease-out all
+//     opacity: 1
+//     &.ng-leave-active
+//       opacity: 0
+// .item-bind
+//   &.ng-enter
+//     transition: 0.3s ease-out all
+//     opacity: 0
+//     &.ng-enter-active
+//       opacity: 1
+//   &.ng-leave
+//     transition: 0.3s ease-out all
+//     opacity: 1
+//     &.ng-leave-active
+//       opacity: 0
+.user-container
+  max-width: 892px
+  margin: auto
 .user
+  box-sizing: border-box
+  overflow: hidden
   &.ng-enter
     transition: 0.3s ease-out all
     opacity: 0
+    width: 0
+    max-height: 177px
+    & > *
+      opacity: 0
     &.ng-enter-active
       opacity: 1
+      width: 213px
   &.ng-leave
     transition: 0.3s ease-out all
     opacity: 1
+    width: 213px
+    max-height: 177px
+    & > *
+      opacity: 0
     &.ng-leave-active
       opacity: 0
-.item-bind
-  &.ng-enter
+      width: 0
+  &.ng-move
     transition: 0.3s ease-out all
     opacity: 0
-    &.ng-enter-active
-      opacity: 1
-  &.ng-leave
-    transition: 0.3s ease-out all
+    width: 0
+
+    &.ng-move-active
     opacity: 1
-    &.ng-leave-active
-      opacity: 0
+    width: 213px
 
 .jumbotron
   background-color: #fff
@@ -95,7 +154,35 @@
     height: 15px
     width: 100%
     text-align: center
+.item-bind
+  box-sizing: border-box
+  overflow: hidden
+  &.ng-enter
+    transition: 0.3s ease-out all
+    opacity: 0
+    width: 0px
+    // & > *
+    //   opacity: 0
+    &.ng-enter-active
+      opacity: 1
+      width: 50px
+  &.ng-leave
+    transition: 0.3s ease-out all
+    opacity: 1
+    width: 50px
+    // & > *
+    //   opacity: 0
+    &.ng-leave-active
+      opacity: 0
+      width: 0px
+  &.ng-move
+    transition: 0.3s ease-out all
+    opacity: 0
+    width: 0px
 
+    &.ng-move-active
+    opacity: 1
+    width: 213px
 .btn-remove
     position: absolute
     top: 0

@@ -278,6 +278,7 @@ config(['$locationProvider', '$routeProvider', function($locationProvider, $rout
       angular.forEach(this.users, function(user){
         // console.log("user #" + user.id + "has removed its binding form item #" + item.id);
         user.removeBindItem(item);
+        user.removeHistory(item.id);
         item.removeBindOwner(user);
       });
       var index = this.items.indexOf(item);
